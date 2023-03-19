@@ -4,14 +4,14 @@ import Card from "./Card";
 import { Grid } from "@mui/material";
 import instance from "../../utils/Axios";
 
-const Main = () => {
+const Inventory = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     instance
       .get("/objects/products")
       .then(({ data }) => {
-        setProducts(data.filter(({ userfields }) => !!userfields.favorite));
+        setProducts(data.filter(({ userfields }) => !!userfields.inventory));
       })
       .catch((error) => console.log(error));
   }, []);
@@ -31,4 +31,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default Inventory;

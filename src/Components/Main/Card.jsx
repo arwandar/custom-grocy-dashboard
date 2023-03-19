@@ -1,7 +1,9 @@
 import {
+  Alert,
   CardActionArea,
   CardContent,
   Card as MCard,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -10,6 +12,8 @@ import Axios from "../../utils/Axios";
 
 const Card = ({ product }) => {
   const [qt, setQt] = useState(0);
+  const [snackbar, setSnackbar] = useState(false);
+  const [severitySnackbar, setSeveritySnackbar] = useState();
 
   useEffect(() => {
     Axios.get(`/stock/products/${product.id}`)
@@ -17,7 +21,7 @@ const Card = ({ product }) => {
         setQt(data.stock_amount);
       })
       .catch((error) => console.log(error));
-  }, [qt, product.id]);
+  }, [product.id]);
 
   const handleAction = () => {
     Axios.post(`/stock/products/${product.id}/consume`, {
@@ -27,8 +31,13 @@ const Card = ({ product }) => {
     })
       .then(() => {
         setQt(qt - 1);
+        setSeveritySnackbar("success");
+        setSnackbar(true);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setSeveritySnackbar("error");
+        setSnackbar(true);
+      });
   };
 
   return (
@@ -40,6 +49,19 @@ const Card = ({ product }) => {
           </Typography>
         </CardContent>
       </CardActionArea>
+      <Snackbar
+        open={snackbar}
+        autoHideDuration={1000}
+        onClose={() => setSnackbar(false)}
+      >
+        <Alert
+          onClose={() => setSnackbar(false)}
+          severity={severitySnackbar}
+          sx={{ width: "100%" }}
+        >
+          Done
+        </Alert>
+      </Snackbar>
     </MCard>
   );
 };

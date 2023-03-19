@@ -4,12 +4,20 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import "./App.css";
 
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+
+import Inventory from "./Components/Inventory";
 import Main from "./Components/Main";
 
 function App() {
   return (
     <div className="App">
-      <Main />
+      <Router>
+        <Routes>
+          <Route path="/inventory" element={<Inventory />} />
+          <Route path="/main" element={<Main />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
