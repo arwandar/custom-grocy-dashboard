@@ -15,7 +15,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/inventory" element={<Inventory />} />
-          <Route path="/main" element={<Main />} />
+          <Route path="/" element={<Main />} />
         </Routes>
       </Router>
     </div>

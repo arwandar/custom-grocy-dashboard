@@ -11,7 +11,9 @@ const Main = () => {
     instance
       .get("/objects/products")
       .then(({ data }) => {
-        setProducts(data.filter(({ userfields }) => !!userfields.favorite));
+        setProducts(
+          data.filter(({ userfields }) => userfields.favorite === "1")
+        );
       })
       .catch((error) => console.log(error));
   }, []);
@@ -19,7 +21,11 @@ const Main = () => {
   const table = products
     .sort((obj1, obj2) => ("" + obj1.name).localeCompare(obj2.name))
     .map((product) => (
-      <Grid key={product.id} item>
+      <Grid
+        key={product.id}
+        item
+        style={{ alignSelf: "stretch", justifySelf: "auto" }}
+      >
         <Card key={product.id} product={product} />
       </Grid>
     ));

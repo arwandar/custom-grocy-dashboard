@@ -1,15 +1,16 @@
 import {
+  Badge,
   Button,
   CardActionArea,
   CardContent,
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   Input,
   Card as MCard,
   Slider,
   Typography,
+  badgeClasses,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
@@ -61,44 +62,60 @@ const Card = ({ product }) => {
   };
 
   return (
-    <MCard sx={{ maxWidth: 345 }}>
-      <CardActionArea onClick={() => setModalOpened(true)}>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {`${product.name} (${qt})`}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <Dialog open={isModalOpened} onClose={handleClose} fullScreen>
-        <DialogTitle>{product.name}</DialogTitle>
-        <DialogContent>
-          <Slider
-            value={typeof qt === "number" ? qt : 0}
-            onChange={handleSliderChange}
-            aria-labelledby="input-slider"
-            min={min}
-            max={max}
-          />
+    <Badge
+      badgeContent={qt}
+      color="primary"
+      sx={{
+        [`& .${badgeClasses.badge}`]: {
+          fontSize: "2em",
+        },
+      }}
+    >
+      <MCard sx={{ maxWidth: 345 }}>
+        <CardActionArea onClick={() => setModalOpened(true)}>
+          <CardContent>
+            <Typography variant="h5">{product.name}</Typography>
+          </CardContent>
+        </CardActionArea>
+        <Dialog open={isModalOpened} onClose={handleClose} fullScreen>
+          <Typography variant="h1">{product.name}</Typography>
+          <DialogContent>
+            <Slider
+              value={typeof qt === "number" ? qt : 0}
+              onChange={handleSliderChange}
+              aria-labelledby="input-slider"
+              min={min}
+              max={max}
+            />
 
-          <Input
-            value={qt}
-            size="small"
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-            inputProps={{
-              min,
-              max,
-              type: "number",
-              "aria-labelledby": "input-slider",
-            }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSave}>Valider</Button>
-          <Button onClick={handleClose}>Annuler</Button>
-        </DialogActions>
-      </Dialog>
-    </MCard>
+            <Input
+              value={qt}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              fullWidth
+              inputProps={{
+                min,
+                max,
+                type: "number",
+                "aria-labelledby": "input-slider",
+              }}
+              style={{
+                fontSize: "10em",
+                textAlign: "right",
+              }}
+            />
+          </DialogContent>
+          <DialogActions style={{ justifyContent: "space-evenly" }}>
+            <Button onClick={handleClose} style={{ fontSize: "5em" }}>
+              Annuler
+            </Button>
+            <Button onClick={handleSave} style={{ fontSize: "5em" }}>
+              Valider
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </MCard>
+    </Badge>
   );
 };
 

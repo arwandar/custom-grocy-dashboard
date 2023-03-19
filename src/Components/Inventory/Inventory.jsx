@@ -11,7 +11,9 @@ const Inventory = () => {
     instance
       .get("/objects/products")
       .then(({ data }) => {
-        setProducts(data.filter(({ userfields }) => !!userfields.inventory));
+        setProducts(
+          data.filter(({ userfields }) => userfields.inventory === "1")
+        );
       })
       .catch((error) => console.log(error));
   }, []);

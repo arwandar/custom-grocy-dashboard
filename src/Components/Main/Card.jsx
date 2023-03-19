@@ -1,10 +1,12 @@
 import {
   Alert,
+  Badge,
   CardActionArea,
   CardContent,
   Card as MCard,
   Snackbar,
   Typography,
+  badgeClasses,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
@@ -41,28 +43,38 @@ const Card = ({ product }) => {
   };
 
   return (
-    <MCard sx={{ maxWidth: 345 }}>
-      <CardActionArea onClick={handleAction}>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {`${product.name} (${qt})`}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <Snackbar
-        open={snackbar}
-        autoHideDuration={1000}
-        onClose={() => setSnackbar(false)}
-      >
-        <Alert
+    <Badge
+      badgeContent={qt}
+      color="primary"
+      sx={{
+        [`& .${badgeClasses.badge}`]: {
+          fontSize: "2em",
+        },
+      }}
+    >
+      <MCard sx={{ maxWidth: 345 }}>
+        <CardActionArea onClick={handleAction}>
+          <CardContent>
+            <Typography variant="h5" noWrap>
+              {product.name}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <Snackbar
+          open={snackbar}
+          autoHideDuration={1000}
           onClose={() => setSnackbar(false)}
-          severity={severitySnackbar}
-          sx={{ width: "100%" }}
         >
-          Done
-        </Alert>
-      </Snackbar>
-    </MCard>
+          <Alert
+            onClose={() => setSnackbar(false)}
+            severity={severitySnackbar}
+            sx={{ width: "100%" }}
+          >
+            Done
+          </Alert>
+        </Snackbar>
+      </MCard>
+    </Badge>
   );
 };
 
