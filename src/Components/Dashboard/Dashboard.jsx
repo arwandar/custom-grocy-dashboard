@@ -2,20 +2,21 @@ import React, { useEffect, useMemo, useState } from "react";
 import Axios from "../../utils/Axios";
 import { MaterialReactTable } from "material-react-table";
 import {
+  Alert,
   Button,
-  Card,
-  CardActionArea,
-  CardContent,
   Dialog,
   DialogActions,
   DialogContent,
   Input,
+  Snackbar,
   Typography,
 } from "@mui/material";
 
 const Dashboard = () => {
   const [products, setProducts] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(false);
+  const [snackbar, setSnackbar] = useState();
+  const [severitySnackbar, setSeveritySnackbar] = useState();
 
   useEffect(() => {
     if (currentProduct) return;
@@ -74,7 +75,23 @@ const Dashboard = () => {
     []
   );
 
-  const handleClose = () => setCurrentProduct(false);
+  const handleClose = (shouldSave = false) => {
+    const product = { ...currentProduct };
+    setCurrentProduct(false);
+
+    if (shouldSave)
+      Axios.post(`/stock/products/${product.id}/inventory`, {
+        new_amount: product.amount,
+      })
+        .then(() => {
+          setSeveritySnackbar("success");
+          setSnackbar(true);
+        })
+        .catch((error) => {
+          setSeveritySnackbar("error");
+          setSnackbar(true);
+        });
+  };
 
   const buttons = [
     { name: "-10", fct: (qt = 0) => (qt - 10 < 0 ? 0 : qt - 10) },
@@ -88,6 +105,15 @@ const Dashboard = () => {
 
   return (
     <>
+      <Snackbar
+        open={snackbar}
+        autoHideDuration={1000}
+        onClose={() => setSnackbar(false)}
+      >
+        <Alert onClose={() => setSnackbar(false)} severity={severitySnackbar}>
+          {severitySnackbar === "success" ? "OK" : "KO"}
+        </Alert>
+      </Snackbar>
       <Dialog open={!!currentProduct} onClose={handleClose} fullScreen>
         <Typography variant="h4">{`${currentProduct?.name} (${currentProduct?.amount})`}</Typography>
         <DialogContent>
@@ -115,8 +141,8 @@ const Dashboard = () => {
           />
         </DialogContent>
         <DialogActions style={{ justifyContent: "space-evenly" }}>
-          <Button onClick={handleClose}>Annuler</Button>
-          <Button onClick={() => alert("TODO")}>Valider</Button>
+          <Button onClick={() => handleClose()}>Annuler</Button>
+          <Button onClick={() => handleClose(true)}>Valider</Button>
         </DialogActions>
       </Dialog>
 
