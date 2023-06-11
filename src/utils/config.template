@@ -1,0 +1,6 @@
+{
+  "baseURL": "",
+  "headers": {
+    "GROCY-API-KEY": ""
+  }
+}

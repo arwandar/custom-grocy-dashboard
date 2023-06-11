@@ -6,16 +6,14 @@ import "./App.css";
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
-import Inventory from "./Components/Inventory";
-import Main from "./Components/Main";
+import Dashboard from "./Components/Dashboard";
 
 function App() {
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/inventory" element={<Inventory />} />
-          <Route path="/" element={<Main />} />
+          <Route path="/" element={<Dashboard />} />
         </Routes>
       </Router>
     </div>
