@@ -133,9 +133,11 @@ const Dashboard = () => {
             value={currentProduct?.amount}
             type="number"
             onChange={(event) =>
-              setCurrentProduct(
-                event.target.value === "" ? "" : Number(event.target.value)
-              )
+              setCurrentProduct({
+                ...currentProduct,
+                amount:
+                  event.target.value === "" ? "" : Number(event.target.value),
+              })
             }
             fullWidth
           />
