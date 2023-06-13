@@ -165,7 +165,7 @@ const Dashboard = () => {
         muiTableBodyRowProps={({ row }) => ({
           onClick: (event) => {
             console.log(row);
-            row.original.subRows.length === 0
+            !row.original.subRows || row.original.subRows.length === 0
               ? setCurrentProduct(row.original)
               : row.toggleExpanded();
           },
